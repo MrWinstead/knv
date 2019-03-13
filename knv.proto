@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package knv;
+
+message DatabaseKey {
+    string Table = 1;
+    string Index = 2;
+    string Key = 3;
+};
+
+message DatabaseItem {
+    enum State {
+        UNKNOWN = 0;
+        NOT_FOUND = 1;
+    }
+    State state = 1;
+};
+
+message RequestHeader {
+    bytes RequestID = 1;
+};
+
+message ResponseHeader {
+    bytes TransactionID = 2;
+};
+
+message DatabaseGetRequest {
+    RequestHeader Header = 1;
+    DatabaseKey Key = 2;
+};
+
+message DatabaseGetResponse {
+    ResponseHeader Header = 1;
+    DatabaseItem Item = 2;
+};
+
+message DatabaseDeleteRequest {
+    RequestHeader Header = 1;
+};
+
+message DatabaseDeleteResponse {
+    ResponseHeader Header = 1;
+
+};
+
+message DatabasePutRequest {
+
+};
+
+message DatabasePutResponse {
+    ResponseHeader Header = 1;
+
+};
+
+service Database {
+    rpc Get(DatabaseGetRequest) returns (DatabaseGetResponse);
+    rpc Delete(DatabaseDeleteRequest) returns (DatabaseDeleteResponse);
+    rpc Put(DatabasePutRequest) returns (DatabasePutResponse);
+}

@@ -14,6 +14,7 @@ const (
 	sinkNameOperationDelete = "BadgerBackedStorageDelete"
 	sinkNameOperationGet    = "BadgerBackedStorageGet"
 	sinkNameOperationPut    = "BadgerBackedStoragePut"
+	sinkNameBadgerLog       = "BackerBackedStorageLibraryTextLog"
 
 	operationNameDelete = "Delete"
 	operationNameGet    = "Get"
@@ -154,9 +155,9 @@ func (b *badgerBackedStore) Get(table, index, key string) (interface{},
 			return err
 		}
 
-		valueSerialized, valueFetchErr := item.Value()
-		if nil != valueFetchErr {
-			err := errors.Wrap(valueFetchErr,
+		valueSerialized, valueCopyErr := item.ValueCopy(nil)
+		if nil != valueCopyErr {
+			err := errors.Wrap(valueCopyErr,
 				"could not fetch item data from database")
 			return err
 		}

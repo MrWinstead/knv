@@ -34,10 +34,11 @@ func Execute() {
 
 func configureViperOrFatal(v *viper.Viper) {
 	v.AutomaticEnv()
+	configuration.PopulateDefaultValues(v)
 
 	rootDbDirFlag := configuration.ConfigKeyToCLIArgument(
 		configuration.KeyDirectoryNameRootDatabase)
-	rootCmd.PersistentFlags().StringP(rootDbDirFlag, "-r", "",
+	rootCmd.PersistentFlags().StringP(rootDbDirFlag, "d", "",
 		"the root directory for tables and indexes")
 	markFlagRequiredOrFatal(rootCmd, rootDbDirFlag)
 	bindPflagOrFatal(v, configuration.KeyDirectoryNameRootDatabase,
@@ -45,7 +46,7 @@ func configureViperOrFatal(v *viper.Viper) {
 }
 
 func markFlagRequiredOrFatal(cmd *cobra.Command, flagName string) {
-	markRequiredErr := cmd.MarkFlagRequired(flagName)
+	markRequiredErr := cmd.MarkPersistentFlagRequired(flagName)
 	if nil != markRequiredErr {
 		log.Fatal(markRequiredErr, "could not mark CLI flag a required, ",
 			flagName)
