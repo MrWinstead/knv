@@ -1,26 +1,39 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"github.com/mrwinstead/knv/configuration"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"io"
 	"log"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use: "knv",
-}
+var (
+	// rootCmd represents the base command when called without any subcommands
+	rootCmd = &cobra.Command{
+		Use: "knv",
+		PersistentPreRun: func(_ *cobra.Command, _ []string) {
+			registerSignalHandler()
+		},
+	}
 
-var configuredViper *viper.Viper
+	configuredViper   *viper.Viper
+	rootContext       context.Context
+	rootContextCancel context.CancelFunc
+	monotonicIDSource io.Reader
+)
 
 func init() {
 	configuredViper = viper.GetViper()
 	configureViperOrFatal(configuredViper)
+
+	rootContext, rootContextCancel = context.WithCancel(context.Background())
+	monotonicIDSource = newULIDMonotonicSource()
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
