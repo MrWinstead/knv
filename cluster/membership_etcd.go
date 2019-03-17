@@ -2,9 +2,10 @@ package cluster
 
 import (
 	"context"
+	"runtime"
 	"time"
 
-	"github.com/etcd-io/etcd/clientv3"
+	"github.com/coreos/etcd/clientv3"
 	"github.com/pkg/errors"
 
 	"github.com/mrwinstead/knv/observation"
@@ -59,6 +60,10 @@ func NewEtcdMembershipReporter(client *clientv3.Client, mgr observation.Manager,
 		leaseTime: membershipLeaseTime,
 	}
 
+	runtime.SetFinalizer(created, func(_ interface{}) {
+		close(created.membershipReportedChan)
+	})
+
 	if 0 == created.leaseTime {
 		err := errors.New("lease time must be specified")
 		return nil, err
@@ -68,6 +73,15 @@ func NewEtcdMembershipReporter(client *clientv3.Client, mgr observation.Manager,
 }
 
 func (lr *EtcdMembershipReporter) Run(ctx context.Context) error {
+
+	// Start channel cleanup functionality
+	go func() {
+		select {
+		case <-ctx.Done():
+			return
+		}
+	}()
+
 	joinTime := time.Now()
 	functionObservable := &EtcdMembershipObservable{
 		JoinTime: joinTime,
@@ -133,7 +147,7 @@ func (lr *EtcdMembershipReporter) EnsureMembershipEntry(ctx context.Context) err
 	obs := &EtcdMembershipObservable{}
 	defer lr.sinkMembership.Submit(nil, obs)
 
-	membershipPath := lr.pathAdvisor.ExpandPath(pathMembers,
+	membershipPath := lr.pathAdvisor.ExpandPath(PathMembers,
 		string(lr.identity))
 	obs.Path = membershipPath
 

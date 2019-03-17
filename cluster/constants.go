@@ -1,6 +1,9 @@
 package cluster
 
 const (
-	pathRoot    = "knv/"
-	pathMembers = pathRoot + "cluster-members/"
+	PathRoot                      = "knv/"
+	PathMembers                   = PathRoot + "cluster-members/"
+	PathPrefixElections           = PathRoot + "elections/"
+	PathPrefixInitializerElection = PathPrefixElections + "cluster-initialization"
+	PathClusterInformation        = PathRoot + "cluster-information"
 )

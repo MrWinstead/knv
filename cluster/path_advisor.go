@@ -23,5 +23,8 @@ func (a *etcdPathAdvisor) ExpandPath(parts ...string) string {
 	fullParts := []string{a.prefix}
 	fullParts = append(fullParts, parts...)
 	expanded := path.Join(fullParts...)
+	if '/' != expanded[0] {
+		expanded = "/" + expanded
+	}
 	return expanded
 }

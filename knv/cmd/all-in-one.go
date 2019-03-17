@@ -21,10 +21,22 @@ import (
 var allInOneCmd = &cobra.Command{
 	Use: "all-in-one",
 	Run: allInOneCmdEntrypoint,
+	PreRun: func(cmd *cobra.Command, _ []string) {
+		rootDbDirFlag := configuration.ConfigKeyToCLIArgument(
+			configuration.KeyDirectoryNameRootDatabase)
+		bindPflagOrFatal(configuredViper,
+			configuration.KeyDirectoryNameRootDatabase,
+			cmd.PersistentFlags().Lookup(rootDbDirFlag))
+	},
 }
 
 func init() {
+	rootDbDirFlag := configuration.ConfigKeyToCLIArgument(
+		configuration.KeyDirectoryNameRootDatabase)
 	rootCmd.AddCommand(allInOneCmd)
+	allInOneCmd.PersistentFlags().StringP(rootDbDirFlag, "d", "",
+		"the root directory for tables and indexes")
+	markFlagRequiredOrFatal(allInOneCmd, rootDbDirFlag)
 }
 
 func allInOneCmdEntrypoint(cmd *cobra.Command, args []string) {

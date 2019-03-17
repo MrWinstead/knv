@@ -12,4 +12,17 @@ two twists:
 
 KNV expects to run with the following services:
 * Etcd
-* Apache kafka (future)
+
+## Roadmap
+
+The following are currently supported:
+* gRPC-based multi-key-value store API
+* local on-disk storage
+* Cluster Membership
+
+Up next are the following features:
+* Write re-direction to shard write-leaders
+* Kafka-backed storage
+* Kafka-enabled storage replication
+* Separate read instances
+* Self-healing node/shard assignment

@@ -3,7 +3,7 @@ package cmd
 import (
 	"time"
 
-	"github.com/etcd-io/etcd/clientv3"
+	"github.com/coreos/etcd/clientv3"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 

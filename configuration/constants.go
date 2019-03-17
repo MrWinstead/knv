@@ -23,4 +23,11 @@ const (
 	// KeyBackingServiceEtcd is a whitespace-separated list of host:port for
 	// etcd hosts
 	KeyBackingServiceEtcd = "BACKINGSERVICE_ETCD"
+
+	// KeyClusterName is the name by which the cluster should be delineated from
+	// other clusters
+	KeyClusterName = "CLUSTER_NAME"
+
+	// KeyClusterShardCount defaults to 16 virtual nodes
+	KeyClusterShardCount = "CLUSTER_SHARD_COUNT"
 )

@@ -21,7 +21,14 @@ const (
 	// project
 	DefaultClusterInformationPathPrefix = "/github.com/mrwinstead/knv/"
 
+	// DefaultBackingServiceEtcd defaults to localhost on default port
 	DefaultBackingServiceEtcd = "127.0.0.1:2379"
+
+	// DefaultClusterName something descriptive
+	DefaultClusterName = "default"
+
+	// DefaultClusterShardCount defaults to 8 shards
+	DefaultClusterShardCount = 8
 )
 
 var (
@@ -31,6 +38,8 @@ var (
 		KeyMembershipLeaseTime:          DefaultLivenessLeaseTime,
 		KeyClusterInformationPathPrefix: DefaultClusterInformationPathPrefix,
 		KeyBackingServiceEtcd:           DefaultBackingServiceEtcd,
+		KeyClusterName:                  DefaultClusterName,
+		KeyClusterShardCount:            DefaultClusterShardCount,
 	}
 )
 

@@ -62,7 +62,6 @@ func (e *etcdLivenessReporterTestSuite) SetupSuite() {
 		ReportedIdentity(identity.String()), pa, 1*time.Second)
 	e.NoError(reporterBuildErr)
 	e.reporter = reporter.(*EtcdMembershipReporter)
-
 }
 
 func (e *etcdLivenessReporterTestSuite) SetupTest() {

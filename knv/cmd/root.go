@@ -48,14 +48,6 @@ func Execute() {
 func configureViperOrFatal(v *viper.Viper) {
 	v.AutomaticEnv()
 	configuration.PopulateDefaultValues(v)
-
-	rootDbDirFlag := configuration.ConfigKeyToCLIArgument(
-		configuration.KeyDirectoryNameRootDatabase)
-	rootCmd.PersistentFlags().StringP(rootDbDirFlag, "d", "",
-		"the root directory for tables and indexes")
-	markFlagRequiredOrFatal(rootCmd, rootDbDirFlag)
-	bindPflagOrFatal(v, configuration.KeyDirectoryNameRootDatabase,
-		rootCmd.PersistentFlags().Lookup(rootDbDirFlag))
 }
 
 func markFlagRequiredOrFatal(cmd *cobra.Command, flagName string) {

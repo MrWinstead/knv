@@ -1,3 +1,4 @@
 # KNV Documentation
 
-## [Algorithms](./algorithms.md)
+* [Architecture](./architecture.md)
+* [Algorithms](./algorithms.md)
